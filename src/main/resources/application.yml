@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:wines
+    username: sa
+    password:
+    platform: h2
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+  # enable H2 web console and set url for web console
+  # http://localhost:8080/h2
+  h2:
+    console:
+      enabled: true
+      path: /h2
