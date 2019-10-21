@@ -1,6 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {ExchangeRatesService} from "./exchange-rates.service";
 import {WinesService} from "./wines.service";
+import {Observable} from "rxjs";
+import {ExchangeRates} from "./model/exchange-rates";
+import {WinesRoot} from "./model/wines/wines-root";
 
 @Component({
   selector: 'app-root',
@@ -13,16 +16,13 @@ export class AppComponent implements OnInit {
   constructor(private exchangeRatesService: ExchangeRatesService, private winesService: WinesService) {
   }
 
+  exchangeRates$: Observable<ExchangeRates>;
+  wines$: Observable<WinesRoot>;
+
   ngOnInit(): void {
 
-    this.exchangeRatesService.getLatestRatesWithBase("USD").subscribe(value => {
-      console.log(value.rates);
-    });
-
-    this.winesService.getWines(0).subscribe(value => {
-      console.log(value)
-    });
-
+    this.exchangeRates$ = this.exchangeRatesService.getLatestRatesWithBase("USD");
+    this.wines$ = this.winesService.getWines(0);
   }
 
 }
