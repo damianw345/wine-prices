@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {ExchangeRatesService} from "./exchange-rates.service";
 import {WinesService} from "./wines.service";
 import {Observable} from "rxjs";
-import {ExchangeRates} from "./model/exchange-rates";
 import {WinesRoot} from "./model/wines/wines-root";
 
 @Component({
@@ -12,16 +11,25 @@ import {WinesRoot} from "./model/wines/wines-root";
 })
 export class AppComponent implements OnInit {
 
+  private wines$: Observable<WinesRoot>;
+  private defaultCurrency = "USD";
+  private currency = this.defaultCurrency;
+  private currencies: string[] = [this.defaultCurrency];
+  private currenciesOfRates: Map<string, number> = new Map<string, number>();
 
-  constructor(private exchangeRatesService: ExchangeRatesService, private winesService: WinesService) {
+  constructor(private exchangeRatesService: ExchangeRatesService,
+              private winesService: WinesService) {
   }
 
-  exchangeRates$: Observable<ExchangeRates>;
-  wines$: Observable<WinesRoot>;
-
   ngOnInit(): void {
+    this.exchangeRatesService.getLatestRatesWithBase(this.defaultCurrency)
+      .subscribe(root => {
+        this.currencies = Object.keys(root.rates);
+        for (let [key, value] of Object.entries(root.rates)) {
+          this.currenciesOfRates.set(key, value);
+        }
+      });
 
-    this.exchangeRates$ = this.exchangeRatesService.getLatestRatesWithBase("USD");
     this.wines$ = this.winesService.getWines(0);
   }
 

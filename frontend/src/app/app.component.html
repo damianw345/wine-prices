@@ -10,7 +10,11 @@
         <th scope="col">Province</th>
         <th scope="col">Variety</th>
         <th scope="col">Price</th>
-        <th scope="col">Currency</th>
+        <th scope="col">
+          <select [(ngModel)]="currency">
+            <option *ngFor="let c of currencies">{{c}}</option>
+          </select>
+        </th>
       </tr>
       </thead>
       <tbody>
@@ -21,11 +25,10 @@
         <td>{{wine.country}}</td>
         <td>{{wine.province}}</td>
         <td>{{wine.variety}}</td>
-        <td>{{wine.price ? wine.price : "-"}}</td>
+        <td>{{wine.price ? ((wine.price * currenciesOfRates.get(currency)) | number : '1.2-2') : "-"}}</td>
+        <td>{{currency}}</td>
       </tr>
       </tbody>
     </table>
-
   </div>
-
 </div>
