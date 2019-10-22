@@ -3,7 +3,6 @@ import {NgModule} from '@angular/core';
 
 import {AppComponent} from './app.component';
 import {HttpClientModule} from "@angular/common/http";
-import {FormsModule} from "@angular/forms";
 import {InfiniteScrollModule} from "ngx-infinite-scroll";
 
 @NgModule({
@@ -13,7 +12,6 @@ import {InfiniteScrollModule} from "ngx-infinite-scroll";
   imports: [
     BrowserModule,
     HttpClientModule,
-    FormsModule,
     InfiniteScrollModule
   ],
   providers: [],

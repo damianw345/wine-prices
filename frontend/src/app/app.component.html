@@ -17,7 +17,7 @@
           <th scope="col">Variety</th>
           <th scope="col">Price</th>
           <th scope="col">
-            <select [(ngModel)]="currency">
+            <select (change)="recalculatePrices($event)">
               <option *ngFor="let c of currencies">{{c}}</option>
             </select>
           </th>
