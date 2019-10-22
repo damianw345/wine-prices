@@ -3,6 +3,7 @@ import {ExchangeRatesService} from "./exchange-rates.service";
 import {WinesService} from "./wines.service";
 import {Observable} from "rxjs";
 import {WinesRoot} from "./model/wines/wines-root";
+import {Wine} from "./model/wines/wine";
 
 @Component({
   selector: 'app-root',
@@ -16,6 +17,8 @@ export class AppComponent implements OnInit {
   private currency = this.defaultCurrency;
   private currencies: string[] = [this.defaultCurrency];
   private currenciesOfRates: Map<string, number> = new Map<string, number>();
+  private lastPage = 0;
+  private wines: Wine[] = [];
 
   constructor(private exchangeRatesService: ExchangeRatesService,
               private winesService: WinesService) {
@@ -29,8 +32,17 @@ export class AppComponent implements OnInit {
           this.currenciesOfRates.set(key, value);
         }
       });
+    this.appendWines()
+  }
 
-    this.wines$ = this.winesService.getWines(0);
+  onScroll() {
+    this.appendWines()
+  }
+
+  private appendWines(): void {
+    this.winesService.getWines(this.lastPage++).subscribe(winesRoot => {
+      this.wines.push(...winesRoot._embedded.wines);
+    });
   }
 
 }
